@@ -10,7 +10,7 @@ const app = express();
 //req - object representing the incoming request
 //res - object representing the outgoing response
 app.get('/', (req, res) => {
-	res.send({ hi: 'there' })
+	res.send({ hi: 'I changed this' })
 });
 
 //gets an environment variable if not there, default to 5000
