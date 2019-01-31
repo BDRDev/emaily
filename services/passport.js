@@ -34,7 +34,8 @@ passport.use(
 	new GoogleStrategy({
 		clientID: keys.googleClientID,
 		clientSecret: keys.googleClientSecret,
-		callbackURL: '/auth/google/callback'
+		callbackURL: '/auth/google/callback',
+		proxy: true
 	}, (accessToken, refreshToken, profile, done) => {
 		//checks to see if there is a user with the same googleId of the one we just got back
 		User.findOne({ googleId: profile.id })
