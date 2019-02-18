@@ -13,16 +13,25 @@ module.exports = app => {
 	);
 
 	//handles the google callback
-	app.get('/auth/google/callback', 
-		passport.authenticate('google')
+	app.get(
+		//route
+		'/auth/google/callback', 
+		//middleware
+		passport.authenticate('google'),
+		//send them to a different route after login
+		(req, res) => {
+			//res stands for response, req stands for request
+			res.redirect('/surveys');
+		}
 	);
 
 	app.get('/api/logout', (req, res) => {
 		req.logout();
-		res.send(req.user);
+		res.redirect('/');
 	})
 
 	//arrow function gets called when this route is met
+	//this lets us know if a user is signed in or not
 	app.get('/api/current_user', (req, res) => {
 		res.send(req.user);
 	})

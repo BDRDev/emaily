@@ -37,22 +37,21 @@ passport.use(
 		callbackURL: '/auth/google/callback',
 		proxy: true
 	}, 
-	(accessToken, refreshToken, profile, done) => {
+	async (accessToken, refreshToken, profile, done) => {
 		//checks to see if there is a user with the same googleId of the one we just got back
-		User.findOne({ googleId: profile.id })
-			.then(existingUser => {
-				if(existingUser){
-					console.log(existingUser)
-					//pass error objects as well as the users
-					done(null, existingUser);
+		const existingUser = await User.findOne({ googleId: profile.id });
+			
+		//if you return from the if, you do not need the else
+		if(existingUser){
+			console.log(existingUser)
+			//pass error objects as well as the users
+			return done(null, existingUser);
+		}
 
-				} else {
-					//instance of a user
-					new User({ googleId: profile.id }).save()
-						.then(user => done(null, user))
-				}
-			})
-
+		//instance of a user
+		const user = await new User({ googleId: profile.id }).save()
+		done(null, user);
 		
+			
 	})
 );
